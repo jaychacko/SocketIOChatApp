@@ -14,12 +14,27 @@ var server = http.createServer(app);
 var io = socketIo(server);
 
 io.on('connection', (socket) => {
-    console.log('New user connected');
+    console.log('New connected');
+
+    socket.emit('AMessage',{
+        from:'Admin',
+        text:"welcome to chat app",
+        createdAt:new Date().getTime()
+    })
+
+    
+        socket.broadcast.emit('userAdded',{
+            from:'Admin',
+            text:'New user added',
+            createdAt:new Date().getTime()
+        })
+
 
     socket.on('disconnect', () => {
         console.log('user disconnected connected')
     })
 })
+//server
 
 
 app.use(express.static(publicPath))
